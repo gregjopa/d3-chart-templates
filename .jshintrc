@@ -1,0 +1,20 @@
+{
+  "browser": true,
+  "bitwise": true,
+  "camelcase": true,
+  "curly": false,
+  "eqeqeq": true,
+  "forin": true,
+  "eqnull": true,
+  "immed": true,
+  "newcap": true,
+  "noarg": true,
+  "undef": true,
+  "strict": false,
+  "trailing": true,
+  "smarttabs": false,
+  "loopfunc": true,
+  "globals": {
+    "d3": false
+  }
+}
