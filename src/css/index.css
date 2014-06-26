@@ -1,3 +1,5 @@
+/* chart base styles */
+
 .svg-chart line {
   shape-rendering: crispEdges;
 }
@@ -28,17 +30,21 @@
   stroke-width: 1px;
 }
 
-.chart-tooltip {
+
+
+
+/* tooltip styles */
+
+.d3-tip {
   background-color: white;
   border: 1px solid #CCC;
   font-weight: bold;
   font-size: 12px;
-  padding: 10px;
-  position: absolute;
-  width: 200px;
-  height: 58px;
+  padding: 12px;
   pointer-events: none;
 }
+
+
 
 
 /* line chart styles */

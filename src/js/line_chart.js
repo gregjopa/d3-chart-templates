@@ -69,6 +69,18 @@ var lineChart = function () {
         .y1(function (d) { return yScale(d.count); });
 
 
+    // setup tooltip
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .html(function (d) {
+          return tooltipDateFormat(d.date) + '<br/> Clicks: ' + d.count;
+        });
+
+
+    // set date format for tooltip
+    var tooltipDateFormat = d3.time.format('%A, %B %e, %Y');
+
+
     // draw svg container
     var svg = container.append('svg')
         .attr('class', 'svg-chart line-chart')
@@ -128,14 +140,8 @@ var lineChart = function () {
         .attr('d', area);
 
 
-    // draw tooltip
-    var tooltip = container.append('div')
-        .attr('class', 'chart-tooltip')
-        .style('opacity', 0);
-
-
-    // set date format for tooltip
-    var tooltipDateFormat = d3.time.format('%A, %B %e, %Y');
+    // invoke tooltip
+    g.call(tip);
 
 
     // draw circles and add tooltip events
@@ -146,20 +152,8 @@ var lineChart = function () {
         .attr('cx', function (d) { return xScale(d.date); })
         .attr('cy', function (d) { return yScale(d.count); })
         .attr('r', 5)
-        .on('mouseover', function (d) {
-            tooltip.transition()
-                .duration(200)
-                .style('opacity', 1);
-            tooltip.html(tooltipDateFormat(d.date) + '<br/> Clicks: ' + d.count)
-                .style('left', (d3.event.pageX + 5) + 'px')
-                .style('top', (d3.event.pageY - 28) + 'px');
-        })
-        .on('mouseout', function (d) {
-            tooltip.transition()
-                .duration(500)
-                .style('opacity', 0);
-        });
-
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
 
   };
 
