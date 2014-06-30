@@ -38,8 +38,9 @@
 .d3-tip {
   background-color: white;
   border: 1px solid #CCC;
-  font-weight: bold;
+  box-shadow: 2px 2px 5px #CCC;
   font-size: 12px;
+  font-weight: bold;
   padding: 12px;
   pointer-events: none;
 }
@@ -57,6 +58,11 @@
 
 .line-chart .circle {
   fill: #058DC7;
+}
+
+.line-chart .circle.active {
+  stroke: #058DC7;
+  stroke-width: 6px;
 }
 
 .line-chart .area {

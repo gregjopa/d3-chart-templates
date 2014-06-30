@@ -152,8 +152,14 @@ var lineChart = function () {
         .attr('cx', function (d) { return xScale(d.date); })
         .attr('cy', function (d) { return yScale(d.count); })
         .attr('r', 5)
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        .on('mouseover', function (d) {
+          tip.show(d);
+          d3.select(this).classed('active', true);
+        })
+        .on('mouseout', function (d) {
+          tip.hide(d);
+          d3.select(this).classed('active', false);
+        });
 
   };
 
