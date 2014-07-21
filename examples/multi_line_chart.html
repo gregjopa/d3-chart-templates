@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Multi-Line Chart Example | D3 Chart Templates</title>
+    <link rel="stylesheet" href="../src/css/index.css">
+    <!-- bootstrap css framework is not required -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Multi-Line Chart Example</h1><hr>
+      <div id="multi-line-chart"></div>
+    </div>
+
+    <script src="../bower_components/d3/d3.js"></script>
+    <script src="../bower_components/d3-tip/index.js"></script>
+    <script src="../src/js/multi_line_chart.js"></script>
+
+    <script>
+
+      var fixtureMultiLineChart = [
+        [
+          { date: new Date('2014-01-01T08:00:00Z'), count: 15 },
+          { date: new Date('2014-01-01T08:00:00Z'), count: 18 }
+        ],
+        [
+          { date: new Date('2014-01-02T08:00:00Z'), count: 26 },
+          { date: new Date('2014-01-02T08:00:00Z'), count: 19 }
+        ],
+        [
+          { date: new Date('2014-01-03T08:00:00Z'), count: 15 },
+          { date: new Date('2014-01-03T08:00:00Z'), count: 21 }
+        ],
+        [
+          { date: new Date('2014-01-04T08:00:00Z'), count: 17 },
+          { date: new Date('2014-01-04T08:00:00Z'), count: 9 }
+        ],
+        [
+          { date: new Date('2014-01-05T08:00:00Z'), count: 11 },
+          { date: new Date('2014-01-05T08:00:00Z'), count: 11 }
+        ],
+        [
+          { date: new Date('2014-01-06T08:00:00Z'), count: 14 },
+          { date: new Date('2014-01-06T08:00:00Z'), count: 7 }
+        ],
+        [
+          { date: new Date('2014-01-07T08:00:00Z'), count: 15 },
+          { date: new Date('2014-01-07T08:00:00Z'), count: 7 }
+        ],
+        [
+          { date: new Date('2014-01-08T08:00:00Z'), count: 17 },
+          { date: new Date('2014-01-08T08:00:00Z'), count: 5 }
+        ],
+        [
+          { date: new Date('2014-01-09T08:00:00Z'), count: 21 },
+          { date: new Date('2014-01-09T08:00:00Z'), count: 12 }
+        ],
+        [
+          { date: new Date('2014-01-10T08:00:00Z'), count: 24 },
+          { date: new Date('2014-01-10T08:00:00Z'), count: 14 }
+        ]
+      ];
+
+      var multiLineChart1 = multiLineChart()
+        .data(fixtureMultiLineChart)
+        .width(960)
+        .height(500)
+        .axisLabels({ x: 'January 2014', y: 'Clicks' })
+        .legendLabels(['Los Angeles', 'San Diego']);
+
+      d3.select('#multi-line-chart').call(multiLineChart1);
+
+    </script>
+
+  </body>
+</html>

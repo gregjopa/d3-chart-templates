@@ -5,7 +5,7 @@
 }
 
 .svg-chart .axis, .svg-chart .axis-label {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .svg-chart .axis line {
@@ -22,7 +22,7 @@
 }
 
 .svg-chart text.axis-label {
-  fill: #AAA;
+  fill: #707070;
 }
 
 .y.axis .tick:first-child line {
@@ -38,11 +38,22 @@
 .d3-tip {
   background-color: white;
   border: 1px solid #CCC;
-  box-shadow: 2px 2px 5px #CCC;
+  box-shadow: 2px 2px 4px #CCC;
   font-size: 12px;
-  font-weight: bold;
   padding: 12px;
   pointer-events: none;
+}
+
+.d3-tip .date {
+  font-weight: bold;
+}
+
+.d3-tip .circle {
+  border-radius: 4px;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
 }
 
 
@@ -50,22 +61,6 @@
 
 /* line chart styles */
 
-.line-chart .line {
-  fill: none;
-  stroke: #058DC7;
-  stroke-width: 4px;
-}
-
-.line-chart .circle {
-  fill: #058DC7;
-}
-
 .line-chart .circle.active {
-  stroke: #058DC7;
   stroke-width: 6px;
-}
-
-.line-chart .area {
-  fill: #058DC7;
-  fill-opacity: 0.1;
 }
