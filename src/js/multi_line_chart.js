@@ -38,12 +38,12 @@ var multiLineChart = function () {
         .range([20, width]);
 
     var xAxis = d3.svg.axis()
-        .scale(xScale)
         .orient('bottom')
+        .scale(xScale)
         .ticks(5)
-        .tickSize(-height, 0)
+        .tickFormat(xAxisDateFormat)
         .tickPadding(6)
-        .tickFormat(xAxisDateFormat);
+        .tickSize(-height, 0);
 
 
     // setup y-axis
@@ -69,7 +69,7 @@ var multiLineChart = function () {
         .html(function (d) {
           return '<span class="date">' + tooltipDateFormat(d.date) +
             '</span><br><span class="circle" style="background-color: ' + d.color +
-            ';"> </span>Clicks: ' + d.count;
+            ';"></span>Clicks: ' + d.count;
         });
 
 
@@ -111,14 +111,15 @@ var multiLineChart = function () {
     svg.append('text')
         .attr('class', 'y axis-label')
         .attr('transform', 'rotate(-90)')
-        .attr('y', margin.left / 4)
         .attr('x', -height / 2)
+        .attr('y', margin.left / 4)
         .style('text-anchor', 'middle')
         .text(axisLabels.y);
 
 
     // create group for chart data
     var g = svg.append('g')
+        .attr('class', 'chart-data')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 
@@ -167,8 +168,8 @@ var multiLineChart = function () {
           tip.show(d);
           d3.select(this).classed('active', true);
         })
-        .on('mouseout', function (d) {
-          tip.hide(d);
+        .on('mouseout', function () {
+          tip.hide();
           d3.select(this).classed('active', false);
         });
 

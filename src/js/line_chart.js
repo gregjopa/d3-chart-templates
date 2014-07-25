@@ -35,12 +35,12 @@ var lineChart = function () {
         .range([20, width]);
 
     var xAxis = d3.svg.axis()
-        .scale(xScale)
         .orient('bottom')
+        .scale(xScale)
         .ticks(5)
-        .tickSize(-height, 0)
-        .tickPadding(6)
-        .tickFormat(xAxisDateFormat);
+        .tickFormat(xAxisDateFormat)
+        .tickPadding(8)
+        .tickSize(-height, 0);
 
 
     // setup y-axis
@@ -49,12 +49,12 @@ var lineChart = function () {
         .range([height, 0]);
 
     var yAxis = d3.svg.axis()
-        .scale(yScale)
         .orient('left')
+        .scale(yScale)
         .ticks(5)
-        .tickSize(-width, 0)
-        .tickPadding(6)
-        .tickFormat(d3.format('s'));
+        .tickFormat(d3.format('s'))
+        .tickPadding(8)
+        .tickSize(-width, 0);
 
 
     // setup line
@@ -76,7 +76,7 @@ var lineChart = function () {
         .html(function (d) {
           return '<span class="date">' + tooltipDateFormat(d.date) +
             '</span><br><span class="circle" style="background-color: ' + color +
-            ';"> </span>Clicks: ' + d.count;
+            ';"></span>Clicks: ' + d.count;
         });
 
 
@@ -118,14 +118,15 @@ var lineChart = function () {
     svg.append('text')
         .attr('class', 'y axis-label')
         .attr('transform', 'rotate(-90)')
-        .attr('y', margin.left / 4)
         .attr('x', -height / 2)
+        .attr('y', margin.left / 4)
         .style('text-anchor', 'middle')
         .text(axisLabels.y);
 
 
     // create group for chart data
     var g = svg.append('g')
+        .attr('class', 'chart-data')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 
@@ -161,8 +162,8 @@ var lineChart = function () {
           tip.show(d);
           d3.select(this).classed('active', true);
         })
-        .on('mouseout', function (d) {
-          tip.hide(d);
+        .on('mouseout', function () {
+          tip.hide();
           d3.select(this).classed('active', false);
         });
 
