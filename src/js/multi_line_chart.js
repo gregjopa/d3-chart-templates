@@ -5,14 +5,22 @@ var multiLineChart = function () {
   var data = [];
 
   // var data = [
-  //   [
-  //     { 'date': new Date('2014-01-01T08:00:00Z'), 'count': 25 },
-  //     { 'date': new Date(2014-01-01T08:00:00Z'), 'count': 26 }
-  //   ],
-  //   [
-  //     { 'date': new Date('2014-01-02T08:00:00Z'), 'count': 37 },
-  //     { 'date': new Date(2014-01-02T08:00:00Z'), 'count': 41 }
-  //   ],
+  //   {
+  //     name: 'Line 1',
+  //     points: [
+  //       { 'date': new Date('2014-01-01T08:00:00Z'), count: 25 },
+  //       { 'date': new Date('2014-02-01T08:00:00Z'), count: 37 },
+  //       ...
+  //     ]
+  //   },
+  //   {
+  //     name: 'Line 2',
+  //     points: [
+  //       { 'date': new Date('2014-01-01T08:00:00Z'), count: 26 },
+  //       { 'date': new Date('2014-02-01T08:00:00Z'), count: 41 },
+  //       ...
+  //     ]
+  //   },
   //   ...
   // ];
 
@@ -22,7 +30,6 @@ var multiLineChart = function () {
   var axisLabels = { x: 'Date', y: 'Count' };
   var xAxisDateFormat = d3.time.format('%d %b');
   var colorScale = d3.scale.category20();
-  var legendLabels = ['Count 1', 'Count 2'];
   var legendHeight = 60;
 
 
@@ -34,7 +41,7 @@ var multiLineChart = function () {
 
     // setup x-axis
     var xScale = d3.time.scale()
-        .domain(d3.extent(data, function (d) { return d[0].date; }))
+        .domain(d3.extent(data[0].points, function (d) { return d.date; }))
         .range([20, width]);
 
     var xAxis = d3.svg.axis()
@@ -42,14 +49,14 @@ var multiLineChart = function () {
         .scale(xScale)
         .ticks(5)
         .tickFormat(xAxisDateFormat)
-        .tickPadding(6)
+        .tickPadding(8)
         .tickSize(-height, 0);
 
 
     // setup y-axis
     var yScale = d3.scale.linear()
         .domain([0, d3.max(data, function (d) {
-          var counts = d.map(function (point) { return point.count; });
+          var counts = d.points.map(function (point) { return point.count; });
           return Math.max.apply(Math, counts);
         })])
         .range([height, 0]);
@@ -59,7 +66,7 @@ var multiLineChart = function () {
         .orient('left')
         .ticks(5)
         .tickSize(-width, 0)
-        .tickPadding(6)
+        .tickPadding(8)
         .tickFormat(d3.format('s'));
 
 
@@ -69,7 +76,7 @@ var multiLineChart = function () {
         .html(function (d) {
           return '<span class="date">' + tooltipDateFormat(d.date) +
             '</span><br><span class="circle" style="background-color: ' + d.color +
-            ';"></span>Clicks: ' + d.count;
+            ';"></span>' + d.lineName + ': ' + d.count;
         });
 
 
@@ -124,16 +131,16 @@ var multiLineChart = function () {
 
 
     // setup and draw lines
-    data[0].forEach(function (point, i) {
+    data.forEach(function (line, i) {
 
       var lines = {};
       lines['line' + i] = d3.svg.line()
-          .x(function (d) { return xScale(d[i].date); })
-          .y(function (d) { return yScale(d[i].count); });
+          .x(function (d) { return xScale(d.date); })
+          .y(function (d) { return yScale(d.count); });
 
       g.append('path')
           .attr('class', 'line')
-          .attr('d', lines['line' + i](data))
+          .attr('d', lines['line' + i](data[i].points))
           .style({ 'fill': 'none', 'stroke': colorScale(i), 'stroke-width': 4 });
 
     });
@@ -146,9 +153,10 @@ var multiLineChart = function () {
     // format data for drawing circles
     var circleData = [];
 
-    data.forEach(function (points) {
-      points.forEach(function (point, i) {
+    data.forEach(function (line, i) {
+      line.points.forEach(function (point) {
         point.color = colorScale(i);
+        point.lineName = line.name;
         circleData.push(point);
       });
     });
@@ -179,11 +187,11 @@ var multiLineChart = function () {
 
     var previousTextLength = 0;
     var legendGroup = legend.selectAll('circle')
-        .data(legendLabels)
+        .data(data)
       .enter().append('g')
         .attr('transform', function (d, i) {
           var pixelWidth = previousTextLength * 12;
-          previousTextLength = d.length;
+          previousTextLength = d.name.length;
           return 'translate(' + pixelWidth + ', 0)';
         });
 
@@ -198,7 +206,7 @@ var multiLineChart = function () {
         .attr('class', 'legend text')
         .attr('x', 10)
         .attr('y', 10)
-        .text(function (d) { return d; });
+        .text(function (d) { return d.name; });
 
     legend.attr('transform', function () {
           var x = margin.left + width / 2 - this.getBBox().width / 2;
@@ -247,12 +255,6 @@ var multiLineChart = function () {
   chart.colorScale = function (value) {
     if (!arguments.length) return colorScale;
     colorScale = value;
-    return chart;
-  };
-
-  chart.legendLabels = function (value) {
-    if (!arguments.length) return legendLabels;
-    legendLabels = value;
     return chart;
   };
 
