@@ -74,7 +74,7 @@ var multiLineChart = function () {
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function (d) {
-          return '<span class="date">' + tooltipDateFormat(d.date) +
+          return '<span class="heading">' + tooltipDateFormat(d.date) +
             '</span><br><span class="circle" style="background-color: ' + d.color +
             ';"></span>' + d.lineName + ': ' + d.count;
         });

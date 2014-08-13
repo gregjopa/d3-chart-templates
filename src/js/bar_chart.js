@@ -1,4 +1,4 @@
-var lineChart = function () {
+var barChart = function () {
 
   // default values for configurable input parameters
 
@@ -6,11 +6,11 @@ var lineChart = function () {
 
   // var data = [
   //   {
-  //     'date': new Date('2014-01-01T08:00:00Z'),
+  //     'name': 'January',
   //     'count': 26
   //   },
   //   {
-  //     'date': new Date(2014-01-02T08:00:00Z'),
+  //     'name': 'February',
   //     'count': 43
   //   }, ...
   // ];
@@ -19,7 +19,6 @@ var lineChart = function () {
   var height = 300;
   var margin = { top: 20, right: 20, bottom: 50, left: 50 };
   var axisLabels = { x: 'Date', y: 'Count' };
-  var xAxisDateFormat = d3.time.format('%d %b');
   var color = '#1f77b4';
 
 
@@ -30,15 +29,13 @@ var lineChart = function () {
 
 
     // setup x-axis
-    var xScale = d3.time.scale()
-        .domain(d3.extent(data, function (d) { return d.date; }))
-        .range([20, width]);
+    var xScale = d3.scale.ordinal()
+        .domain(data.map(function (d) { return d.name; }))
+        .rangeRoundBands([0, width], 0.25);
 
     var xAxis = d3.svg.axis()
         .orient('bottom')
         .scale(xScale)
-        .ticks(5)
-        .tickFormat(xAxisDateFormat)
         .tickPadding(8)
         .tickSize(-height, 0);
 
@@ -49,39 +46,20 @@ var lineChart = function () {
         .range([height, 0]);
 
     var yAxis = d3.svg.axis()
-        .orient('left')
         .scale(yScale)
+        .orient('left')
         .ticks(5)
-        .tickFormat(d3.format('s'))
-        .tickPadding(8)
-        .tickSize(-width, 0);
-
-
-    // setup line
-    var line = d3.svg.line()
-        .x(function (d) { return xScale(d.date); })
-        .y(function (d) { return yScale(d.count); });
-
-
-    // setup area
-    var area = d3.svg.area()
-        .x(function (d) { return xScale(d.date); })
-        .y0(height)
-        .y1(function (d) { return yScale(d.count); });
+        .tickSize(-width, 0)
+        .tickPadding(6)
+        .tickFormat(d3.format('s'));
 
 
     // setup tooltip
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function (d) {
-          return '<span class="heading">' + tooltipDateFormat(d.date) +
-            '</span><br><span class="circle" style="background-color: ' + color +
-            ';"></span>Clicks: ' + d.count;
+          return '<span class="heading">' + d.name + '</span><br/> Clicks: ' + d.count;
         });
-
-
-    // set date format for tooltip
-    var tooltipDateFormat = d3.time.format('%A, %B %e, %Y');
 
 
     // draw svg container
@@ -118,53 +96,42 @@ var lineChart = function () {
     svg.append('text')
         .attr('class', 'y axis-label')
         .attr('transform', 'rotate(-90)')
-        .attr('x', -height / 2)
         .attr('y', margin.left / 4)
+        .attr('x', -height / 2)
         .style('text-anchor', 'middle')
         .text(axisLabels.y);
 
 
     // create group for chart data
     var g = svg.append('g')
-        .attr('class', 'chart-data')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-
-    // draw line
-    g.append('path')
-        .attr('class', 'line')
-        .attr('d', line(data))
-        .style({ 'fill': 'none', 'stroke': color, 'stroke-width': 4 });
-
-
-    // draw area
-    g.append('path')
-        .datum(data)
-        .attr('class', 'area')
-        .attr('d', area)
-        .style({ 'fill': color, 'fill-opacity': 0.1 });
 
 
     // invoke tooltip
     g.call(tip);
 
 
-    // draw circles and add tooltip events
-    g.selectAll('circle')
+    // draw bars and add tooltip events
+    g.selectAll('.bar')
         .data(data)
-      .enter().append('circle')
-        .attr('class', 'circle')
-        .attr('cx', function (d) { return xScale(d.date); })
-        .attr('cy', function (d) { return yScale(d.count); })
-        .attr('r', 5)
-        .style({ 'fill': color, 'stroke': color })
+      .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', function (d) { return xScale(d.name); })
+        .attr('y', function (d) { return yScale(d.count); })
+        .attr('width', xScale.rangeBand())
+        .attr('height', function (d) { return height - yScale(d.count); })
+        .attr('fill', color)
         .on('mouseover', function (d) {
           tip.show(d);
-          d3.select(this).classed('active', true);
+          var self = d3.select(this);
+          self.classed('active', true);
+          self.attr('fill', d3.rgb(color).brighter(0.6).toString());
         })
         .on('mouseout', function () {
           tip.hide();
-          d3.select(this).classed('active', false);
+          var self = d3.select(this);
+          self.classed('active', false);
+          self.attr('fill', color);
         });
 
   };
@@ -197,12 +164,6 @@ var lineChart = function () {
   chart.axisLabels = function (value) {
     if (!arguments.length) return axisLabels;
     axisLabels = value;
-    return chart;
-  };
-
-  chart.xAxisDateFormat = function (value) {
-    if (!arguments.length) return xAxisDateFormat;
-    xAxisDateFormat = value;
     return chart;
   };
 

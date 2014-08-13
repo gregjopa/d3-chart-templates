@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bar Chart Example | D3 Chart Templates</title>
+    <link rel="stylesheet" href="../src/css/index.css">
+    <!-- bootstrap css framework is not required -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Bar Chart Example</h1><hr>
+      <div id="bar-chart"></div>
+    </div>
+
+    <script src="../bower_components/d3/d3.js"></script>
+    <script src="../bower_components/d3-tip/index.js"></script>
+    <script src="../src/js/bar_chart.js"></script>
+
+    <script>
+
+      var fixtureBarChart = [
+        { name: 'January', count: 15 },
+        { name: 'February', count: 25 },
+        { name: 'March', count: 15 },
+        { name: 'April', count: 17 },
+        { name: 'June', count: 21 },
+        { name: 'July', count: 14 },
+        { name: 'August', count: 15 },
+        { name: 'September', count: 17 },
+        { name: 'October', count: 21 },
+        { name: 'November', count: 24 },
+        { name: 'December', count: 27 }
+      ];
+
+      var barChart1 = barChart()
+        .data(fixtureBarChart)
+        .width(960)
+        .height(500)
+        .axisLabels({ x: '2014', y: 'Clicks' });
+
+      d3.select('#bar-chart').call(barChart1);
+
+    </script>
+
+  </body>
+</html>
