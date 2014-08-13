@@ -121,18 +121,18 @@ var barChart = function () {
         .attr('y', function (d) { return yScale(d.count); })
         .attr('width', xScale.rangeBand())
         .attr('height', function (d) { return height - yScale(d.count); })
-        .attr('fill', color)
+        .style('fill', color)
         .on('mouseover', function (d) {
           tip.show(d);
           var self = d3.select(this);
           self.classed('active', true);
-          self.attr('fill', d3.rgb(color).brighter(0.6).toString());
+          self.style('fill', d3.rgb(color).brighter(0.6).toString());
         })
         .on('mouseout', function () {
           tip.hide();
           var self = d3.select(this);
           self.classed('active', false);
-          self.attr('fill', color);
+          self.style('fill', color);
         });
 
   };
