@@ -75,8 +75,8 @@ var lineChart = function () {
         .attr('class', 'd3-tip')
         .html(function (d) {
           return '<span class="heading">' + tooltipDateFormat(d.date) +
-            '</span><br><span class="circle" style="background-color: ' + color +
-            ';"></span>Clicks: ' + d.count;
+            '</span><br><span class="circle" style="background-color: ' + color + ';"></span>' +
+            axisLabels.y + ': ' + d.count;
         });
 
 

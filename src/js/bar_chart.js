@@ -58,7 +58,8 @@ var barChart = function () {
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .html(function (d) {
-          return '<span class="heading">' + d.name + '</span><br/> Clicks: ' + d.count;
+          return '<span class="heading">' + d.name + '</span><br/> ' +
+            axisLabels.y + ': ' + d.count;
         });
 
 
